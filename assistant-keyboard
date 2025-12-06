@@ -1,0 +1,14 @@
+source venv/bin/activate
+cd Assistant
+python app.py keyboard 2>/dev/null
+
+
+
+
+
+
+
+
+
+
+
