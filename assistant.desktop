@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=Assistant
+Comment=Start the Assistant Program
+Exec=konsole --hold -e "bash -c 'source /home/momwhyareyouhere/venv/bin/activate && /usr/bin/assistant'"
+Icon=utilities-terminal
+Terminal=false
+Type=Application
+X-GNOME-Autostart-enabled=true
+Categories=Utility;Application;
