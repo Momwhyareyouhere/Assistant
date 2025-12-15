@@ -8,7 +8,7 @@ There are also prebuilt commands for Linux Users and here is how to implement it
 
 1. Activate venv
 
-To activate venv you need to install it first here is the command and make sure you are in the path ~ or else it wont work.
+  To activate venv you need to install it first here is the command and make sure you are in the path ~ or else it wont work.
 
 ```
 cd ~
