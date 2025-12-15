@@ -46,33 +46,46 @@ sudo pacman -S espeak-ng
 ```
 
 5. Run it
+
 After you did all the requirements you can now run the program:
+
 ```
 python3 app.py voice 2>/dev/null
 ```
+
 for the keyboard version:
+
 ```
 python3 app.py keyboard
 ```
 OPTIONAL
+
 This step is optional
 
 If you want to make this a autostart program do this:
+
 1. Chmod the files
+
 You need to chmod the files so that the program can work:
+
 ```
 cd ~/Assistant
 chmod +x assistant-keyboard
 chmod +x assistant
 ```
+
 2. Move them to /usr/bin/
+
 You need to move them to /usr/bin/ so they will work as commands:
+
 ```
 sudo mv assistant-keyboard /usr/bin/
 sudo mv assistant /usr/bin/
 ```
 3. Create a autostart
+
 Now you created the two commands you can now do the autostart:
+
 ```
 cd ~/Assistant
 sudo mv assistant.desktop ~/.config/autostart/
