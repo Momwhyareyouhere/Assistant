@@ -6,10 +6,20 @@ from datetime import datetime
 import webbrowser
 import sys
 import requests
+import time
+import threading
+from pynput.mouse import Controller, Button
 
 global_commands = []
 
-# Initialize speech engine
+autoclicker_clicking = False
+autoclicker_click_count = 0
+autoclicker_session_start = 0
+mouse_controller = Controller()
+autoclicker_thread = None
+
+
+
 engine = pyttsx3.init()
 
 def say(text):
@@ -212,18 +222,18 @@ def get_weather(city=""):
     - "weather new york" (gets weather for New York)
     """
     try:
-        # If city has spaces, format for URL
+
         if city and ' ' in city:
             city = city.replace(' ', '+')
         
-        # Get concise weather report
+
         url = f"http://wttr.in/{city}?format=%l:%C+%t+Humidity+%h+Wind+%w"
         response = requests.get(url, timeout=10)
         
         if response.status_code == 200:
             weather_data = response.text.strip()
             
-            # Clean up the response
+
             weather_data = weather_data.replace('°C', ' degrees celsius')
             weather_data = weather_data.replace('°F', ' degrees fahrenheit')
             weather_data = weather_data.replace('km/h', ' kilometers per hour')
@@ -243,6 +253,77 @@ def get_weather(city=""):
     except Exception as e:
         say("Unable to get weather information at the moment")
 
+
+def run_autoclicker():
+    """Toggle autoclicker on/off"""
+    global autoclicker_clicking, autoclicker_click_count, autoclicker_session_start, autoclicker_thread, mouse_controller
+    
+    def autoclicker_click_loop():
+        global autoclicker_clicking, autoclicker_click_count, autoclicker_session_start
+        local_count = 0
+        last_display = time.time()
+        
+        try:
+            while autoclicker_clicking:
+
+                mouse_controller.click(Button.left)
+                local_count += 1
+                autoclicker_click_count += 1
+                
+
+                current = time.time()
+                if current - last_display > 0.2:
+                    elapsed = current - autoclicker_session_start
+                    cps = autoclicker_click_count / elapsed if elapsed > 0 else 0
+                    print(f"\r✅ Autoclicker: {autoclicker_click_count:,} clicks | {cps:.0f}/sec", end="", flush=True)
+                    last_display = current
+                
+
+                time.sleep(0.001)
+                
+        except Exception as e:
+            print(f"\n❌ Autoclicker Error: {e}")
+    
+    if not autoclicker_clicking:
+
+        autoclicker_clicking = True
+        autoclicker_click_count = 0
+        autoclicker_session_start = time.time()
+        
+
+        autoclicker_thread = threading.Thread(target=autoclicker_click_loop, daemon=True)
+        autoclicker_thread.start()
+        
+        print("\n▶ Autoclicker Started!")
+        say("Autoclicker activated!")
+    else:
+
+        autoclicker_clicking = False
+        
+
+        elapsed = time.time() - autoclicker_session_start
+        if elapsed > 0 and autoclicker_click_count > 0:
+            cps = autoclicker_click_count / elapsed
+            stats = f"Autoclicker stopped. Made {autoclicker_click_count:,} clicks at {cps:.0f} clicks per second."
+            print(f"\n📊 {stats}")
+            say(stats)
+        else:
+            say("Autoclicker deactivated.")
+        
+        time.sleep(0.1) 
+
+def autoclicker_status():
+    """Check autoclicker status"""
+    global autoclicker_clicking, autoclicker_click_count, autoclicker_session_start
+    
+    if autoclicker_clicking:
+        elapsed = time.time() - autoclicker_session_start
+        cps = autoclicker_click_count / elapsed if elapsed > 0 else 0
+        status_msg = f"Autoclicker is active. {autoclicker_click_count:,} clicks made at {cps:.0f} clicks per second."
+        print(f"Status: {status_msg}")
+        say(status_msg)
+    else:
+        say("Autoclicker is not running.")
 
 def load_commands():
     global global_commands
@@ -302,10 +383,10 @@ def voice_input():
     recognizer = sr.Recognizer()
     mic = sr.Microphone()
     
-    # ORIGINAL SETTINGS FOR INSTANT RESPONSE
-    recognizer.pause_threshold = 0.8      # Short pause before processing
-    recognizer.phrase_threshold = 0.3     # Lower threshold for quicker response
-    recognizer.non_speaking_duration = 0.5  # Shorter non-speaking duration
+
+    recognizer.pause_threshold = 0.8      
+    recognizer.phrase_threshold = 0.3    
+    recognizer.non_speaking_duration = 0.5  
     
     print("🎤 Always listening... say 'assistant' then your command")
     
@@ -313,7 +394,7 @@ def voice_input():
         recognizer.adjust_for_ambient_noise(source, duration=0.5)
         while True:
             try:
-                # Listen continuously with no timeout
+
                 audio = recognizer.listen(source, timeout=None, phrase_time_limit=None)
                 command = recognizer.recognize_google(audio).lower()
                 
@@ -330,14 +411,14 @@ def voice_input():
                     continue
                     
             except sr.UnknownValueError:
-                # Just continue listening silently
+
                 continue
             except sr.RequestError as e:
                 print(f"❌ Speech recognition service error: {e}")
                 say("Having trouble with speech recognition.")
                 return None
             except Exception as e:
-                # Don't print other errors
+
                 continue
 
 def keyboard_input():
@@ -349,19 +430,19 @@ def match_command(user_input, commands):
     """Match user input with available commands"""
     user_input = user_input.lower()
     
-    # First check for exact matches
+
     for cmd, response, func in commands:
         if cmd.lower() == user_input:
             return cmd, response, func
     
-    # Check for commands with placeholders
+
     for cmd, response, func in commands:
         if '<' in cmd and '>' in cmd:
             base_cmd = cmd.split('<')[0].strip().lower()
             if user_input.startswith(base_cmd):
                 return cmd, response, func
     
-    # Check for partial matches (original behavior)
+
     for cmd, response, func in commands:
         if cmd.lower() in user_input:
             return cmd, response, func
@@ -380,11 +461,11 @@ def main(input_mode):
         elif input_mode == "keyboard":
             command = keyboard_input()
         else:
-            print("Usage: python3 app.py voice or python3 app.py keyboard")
+            print("Usage: python3 app.py voice 2>/dev/null or python3 app.py keyboard")
             break
         
         if command:
-            # Use the matching function
+
             cmd, response, func = match_command(command, global_commands)
             
             if cmd:
