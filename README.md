@@ -14,6 +14,8 @@ python3 -m venv venv
 source venv/bin/activate
 ```
 2. Clone the repository
+
+
 To do that you need to have git installed on you system and to clone it run this:
 ```
 cd ~/Assistant
