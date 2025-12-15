@@ -8,14 +8,13 @@ There are also prebuilt commands for Linux Users and here is how to implement it
 
 1. Activate venv
 To activate venv you need to install it first here is the command and make sure you are in the path ~ or else it wont work.
+
 ```
 cd ~
 python3 -m venv venv
 source venv/bin/activate
 ```
 2. Clone the repository
-
-
 To do that you need to have git installed on you system and to clone it run this:
 
 ```
