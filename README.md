@@ -16,6 +16,7 @@ python3 -m venv venv
 source venv/bin/activate
 ```
 2. Clone the repository
+
 To do that you need to have git installed on you system and to clone it run this:
 
 ```
@@ -23,17 +24,23 @@ cd ~/Assistant
 git clone https://github.com/Momwhyareyouhere/Assistant.git
 ```
 3. Install requirements
+
 To install requirements run this and make sure venv is activated:
+
 ```
 cd ~/Assistant
 pip install -r requirements.txt
 ```
 4. Install espeak
+
 This program requires espeak to install it run:
+
 ```
 sudo apt install espeak-ng
 ```
+
 On arch linux:
+
 ```
 sudo pacman -S espeak-ng
 ```
