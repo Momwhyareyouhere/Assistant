@@ -23,7 +23,6 @@ autoclicker_thread = None
 engine = pyttsx3.init()
 
 def say(text):
-    """Speak text using TTS"""
     print(f"Speaking:  {text}")
     engine.say(text)
     engine.runAndWait()
@@ -214,13 +213,6 @@ def reload():
         say("Failed to reload commands.")
 
 def get_weather(city=""):
-    """
-    Get weather without any API key using wttr.in
-    Usage: 
-    - "weather" (gets weather for your location)
-    - "weather london" (gets weather for London)
-    - "weather new york" (gets weather for New York)
-    """
     try:
 
         if city and ' ' in city:
@@ -255,7 +247,6 @@ def get_weather(city=""):
 
 
 def run_autoclicker():
-    """Toggle autoclicker on/off"""
     global autoclicker_clicking, autoclicker_click_count, autoclicker_session_start, autoclicker_thread, mouse_controller
     
     def autoclicker_click_loop():
@@ -313,7 +304,6 @@ def run_autoclicker():
         time.sleep(0.1) 
 
 def autoclicker_status():
-    """Check autoclicker status"""
     global autoclicker_clicking, autoclicker_click_count, autoclicker_session_start
     
     if autoclicker_clicking:
@@ -379,7 +369,6 @@ def execute_command(command, response, function_call):
         print(f"Error executing function '{function_call}': {e}")
 
 def voice_input():
-    """Original responsive voice input function"""
     recognizer = sr.Recognizer()
     mic = sr.Microphone()
     
@@ -388,7 +377,7 @@ def voice_input():
     recognizer.phrase_threshold = 0.3    
     recognizer.non_speaking_duration = 0.5  
     
-    print("🎤 Always listening... say 'assistant' then your command")
+    print("Listening...")
     
     with mic as source:
         recognizer.adjust_for_ambient_noise(source, duration=0.5)
@@ -399,7 +388,7 @@ def voice_input():
                 command = recognizer.recognize_google(audio).lower()
                 
                 if command.startswith("assistant"):
-                    print(f"✅ Command received: assistant {command.replace('assistant', '', 1).strip()}")
+                    print(f"Command received: assistant {command.replace('assistant', '', 1).strip()}")
                     actual_command = command.replace("assistant", "", 1).strip()
                     
                     if actual_command:
