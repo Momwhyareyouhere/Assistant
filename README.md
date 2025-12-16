@@ -20,7 +20,6 @@ source venv/bin/activate
 To do that you need to have git installed on you system and to clone it run this:
 
 ```
-cd ~/Assistant
 git clone https://github.com/Momwhyareyouhere/Assistant.git
 ```
 3. Install requirements
