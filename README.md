@@ -23,3 +23,11 @@ cd ~/Assistant
 chmod +x install.sh
 ./install.sh
 ```
+If the command wont work try to install espeak-ng on you system:
+```
+sudo apt install espeak-ng
+```
+on arch linux:
+```
+sudo pacman -S espeak-ng
+```
