@@ -1,5 +1,6 @@
 exit, "Exiting the program.", exit_program()
 show running apps, "Listing running applications...", show_running_apps()
+autoclick, "Toggling Autoclicker...", run_autoclicker()
 shutdown, "Shutting down the system...", shutdown_system()
 shut down, "Shutting down the system...", shutdown_system()
 reboot system, "Rebooting the system...", reboot_system()
