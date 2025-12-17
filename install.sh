@@ -64,10 +64,19 @@ if ! python3 -m venv venv; then
     python3 -m venv venv
 fi
 
-source venv/bin/activate
+if [ -f venv/bin/activate ]; then
+    source venv/bin/activate
+elif [ -f venv/bin/activate.fish ]; then
+    source venv/bin/activate.fish
+else
+    echo "Could not activate virtual environment"
+    exit 1
+fi
+
 pip install --upgrade pip
 pip install -r requirements.txt
-deactivate
+
+deactivate 2>/dev/null || true
 
 read -p "Do you want to put the assistant in autostart? (Y/N): " AUTOSTART
 
