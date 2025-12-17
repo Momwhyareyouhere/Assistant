@@ -1,14 +1,5 @@
+#!/bin/bash
+
+cd ~/Assistant || exit 1
 source ~/Assistant/venv/bin/activate
-cd ~/Assistant
 python app.py keyboard 2>/dev/null
-
-
-
-
-
-
-
-
-
-
-
