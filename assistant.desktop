@@ -1,7 +1,7 @@
 [Desktop Entry]
 Name=Assistant
 Comment=Start the Assistant Program
-Exec=bash -c '/usr/bin/assistant'
+Exec=bash -c 'source ~/venv/bin/activate && /usr/bin/assistant'
 Icon=utilities-terminal
 Terminal=false
 Type=Application
