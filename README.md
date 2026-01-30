@@ -4,6 +4,8 @@ Recently I noticed that there are Assistants for phones but not for Desktop User
 
 To put you own commands just go to commands.txt put you own command and then go to app.py make you own function and thats it you have you own custom command.
 
+There will be also soon a AI version.
+
 There are also prebuilt commands for Linux Users and here is how to implement it:
 
 1. Activate venv
