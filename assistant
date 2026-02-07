@@ -1,3 +1,7 @@
-source venv/bin/activate
-cd Assistant
-python app.py voice 2>/dev/null
+#!/bin/bash
+
+source ~/venv/bin/activate
+
+cd ~/Assistant
+
+python3 app.py voice 2>/dev/null
